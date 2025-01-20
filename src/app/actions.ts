@@ -103,6 +103,6 @@ export const getInvoicesByEmail = async (email: string) => {
       return updatedInvoices;
     }
   } catch (error) {
-    console.error(error);
+    console.log(error);
   }
 };
