@@ -1,6 +1,7 @@
 "use server";
 
 import prisma from "@/lib/prisma";
+import { log } from "console";
 import { randomBytes } from "crypto";
 
 const generateIdUnique = async () => {
@@ -102,6 +103,25 @@ export const getInvoicesByEmail = async (email: string) => {
       );
       return updatedInvoices;
     }
+  } catch (error) {
+    console.log("erreur dans  getInvoicesByEmail");
+  }
+};
+
+export const getInvoiceById = async (invoiceId: string) => {
+  try {
+    const invoice = await prisma.invoice.findUnique({
+      where: {
+        id: invoiceId,
+      },
+      include: {
+        lines: true,
+      },
+    });
+    if (!invoice) {
+      throw new Error("Facture non trouvée");
+    }
+    return invoice;
   } catch (error) {
     console.log(error);
   }
